@@ -138,3 +138,15 @@ At completion provide:
 6. recommended next task
 
 Then update progress.md and todo.md.
+
+## Git requirement
+
+When the task is complete and validation passes:
+
+- update project state
+- review the diff
+- create a focused conventional commit
+- push the commit
+- update handoff.md with the commit hash and next task
+
+Do not leave completed work uncommitted.

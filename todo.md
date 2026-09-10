@@ -20,9 +20,9 @@
 
 ## NEXT — Hero
 
-- [ ] Design final hero composition
-- [ ] Implement landing animation
-- [ ] Implement scroll invitation
+- [x] Design final hero composition
+- [x] Implement landing animation
+- [x] Implement scroll invitation
 - [ ] Test desktop
 - [ ] Test mobile
 - [ ] Test reduced motion

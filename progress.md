@@ -27,7 +27,8 @@ Architecture documents have been defined.
 ## Current implementation
 
 Hero:
-- Implemented as a static responsive shell
+- Implemented as a responsive shell with a lightweight CSS signal
+- Reduced-motion and Tier 0 static states supported
 
 Axiom:
 - Not implemented
@@ -75,7 +76,7 @@ The baseline architecture is documented in:
 
 ## Current task
 
-Scaffold the application without implementing the major project animations.
+Hero landing signal implemented without starting project-specific scenes.
 
 ---
 
@@ -94,10 +95,7 @@ Do not:
 
 ## Next recommended task
 
-Implement the application shell:
-
-1. project structure
-2. routing
+Define the Axiom scene API, semantic progress ranges, and fallback states before implementing its renderer.
 3. visual design system
 4. navigation
 5. hero shell

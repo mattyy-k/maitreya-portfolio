@@ -367,3 +367,51 @@ If work is partially complete, explicitly record:
 - which files matter
 
 The next agent must be able to continue without reconstructing the previous session from chat history.
+
+## Git workflow
+
+The coding agent owns commits for completed implementation work.
+
+For each coherent milestone:
+
+1. Inspect git status before beginning.
+2. Keep unrelated user changes untouched.
+3. Implement the current task.
+4. Run appropriate validation.
+5. Update progress.md.
+6. Update todo.md.
+7. Update handoff.md.
+8. Review the final diff.
+9. Create a focused git commit.
+10. Push the commit when the repository is in a coherent validated state.
+
+Commit messages should use conventional commit style:
+
+feat: ...
+fix: ...
+perf: ...
+refactor: ...
+docs: ...
+chore: ...
+
+Do not create meaningless commits such as:
+- update
+- changes
+- stuff
+- WIP
+
+Do not commit known broken states unless the task explicitly requires
+preserving an intermediate checkpoint.
+
+Do not rewrite or squash historical commits without explicit instruction.
+
+Do not force-push.
+
+Never commit secrets, credentials, API keys, private data, or generated
+machine-specific files.
+
+If unrelated user changes are present, do not include them in the
+agent's commit.
+
+If a clean commit cannot safely be created, explain why in handoff.md
+and stop rather than guessing.

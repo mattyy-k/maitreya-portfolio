@@ -1,6 +1,7 @@
 import { projects } from "@/lib/content";
 import { Navigation } from "@/components/navigation";
 import { ProjectSection } from "@/components/project-section";
+import { HeroSignal } from "@/components/hero-signal";
 
 export function PortfolioShell() {
   return (
@@ -9,6 +10,7 @@ export function PortfolioShell() {
       <main>
         <section className="hero-section" aria-labelledby="hero-title">
           <div className="hero-grid" aria-hidden="true" />
+          <HeroSignal />
           <div className="hero-content">
             <p className="eyebrow">SYSTEMS SOFTWARE / AI / INFRASTRUCTURE</p>
             <h1 id="hero-title">Maitreya<br /><em>Kulkarni</em></h1>

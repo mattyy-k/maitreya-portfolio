@@ -1,6 +1,6 @@
-Foundation complete. The Next.js App Router shell, responsive industrial visual system, navigation, hero and project shells, deep-link routes, rAF-backed scroll progress, render-tier detection, reduced-motion handling, and shell performance marks are implemented. No project-specific cinematic scenes have been started.
+Foundation and Hero signal are complete. The Next.js App Router shell, responsive industrial visual system, navigation, hero and project shells, deep-link routes, rAF-backed scroll progress, render-tier detection, reduced-motion handling, shell performance marks, and an isolated CSS Hero signal are implemented. No project-specific cinematic scenes have been started.
 
-Next task: design and implement the Hero landing animation, beginning with a static/reduced-motion state and a measured lightweight enhancement.
+Next task: define the Axiom scene API, semantic progress ranges, and fallback states before implementing its renderer.
 # Agent Handoff
 
 This file is maintained by the coding agent.
