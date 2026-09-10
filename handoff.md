@@ -1,6 +1,6 @@
-Foundation, Hero signal, Axiom scene contract, static fallback, and lazy scene host are complete. The Next.js App Router shell, responsive industrial visual system, navigation, hero and project shells, deep-link routes, rAF-backed scroll progress, render-tier detection, reduced-motion handling, shell performance marks, isolated CSS Hero signal, Axiom lifecycle interface, semantic stage ranges, visibility-gated fallback, reserved layout shell, and fallback policy are implemented. No Axiom Canvas renderer has been started.
+Foundation, Hero signal, Axiom scene contract, static fallback, lazy scene host, and first Canvas renderer are complete. The Next.js App Router shell, responsive industrial visual system, navigation, hero and project shells, deep-link routes, rAF-backed scroll progress, render-tier detection, reduced-motion handling, shell performance marks, isolated CSS Hero signal, Axiom lifecycle interface, semantic stage ranges, visibility-gated fallback, reserved layout shell, deterministic Canvas rendering, and fallback policy are implemented.
 
-Next task: implement the Axiom Canvas renderer behind the existing contract, preserving the static fallback for reduced motion and lower tiers.
+Next task: profile the Axiom Canvas baseline on desktop and mobile, then refine stage-specific visuals without adding a continuous animation loop.
 # Agent Handoff
 
 This file is maintained by the coding agent.

@@ -2,10 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AxiomStaticFallback } from "@/components/axiom-static-fallback";
+import { AxiomCanvas } from "@/components/axiom-canvas";
+import { getAxiomFallback } from "@/lib/scenes/axiom";
+import { useCapabilities } from "@/components/providers";
 
 export function AxiomSceneHost() {
   const hostRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
+  const { tier, reducedMotion } = useCapabilities();
+  const fallback = getAxiomFallback({ tier, reducedMotion });
 
   useEffect(() => {
     const element = hostRef.current;
@@ -17,7 +22,7 @@ export function AxiomSceneHost() {
 
   return (
     <div className={`axiom-scene-host ${active ? "is-active" : ""}`} ref={hostRef}>
-      {active ? <AxiomStaticFallback /> : <div className="axiom-scene-reserved" aria-hidden="true" />}
+      {active ? fallback === "canvas" ? <AxiomCanvas /> : <AxiomStaticFallback /> : <div className="axiom-scene-reserved" aria-hidden="true" />}
     </div>
   );
 }
