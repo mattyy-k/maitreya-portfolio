@@ -49,34 +49,86 @@ export class AxiomCanvasScene implements AxiomScene {
     context.fillText("AXIOM / CANVAS TRACE", 18, 24);
     context.fillText(`${String(Math.round(normalized * 100)).padStart(3, "0")}%`, this.width - 38, 24);
 
-    context.strokeStyle = "rgba(199, 227, 107, 0.3)";
-    context.beginPath();
-    context.moveTo(centerX - radius * 1.6, centerY);
-    context.lineTo(centerX + radius * 1.6, centerY);
-    context.moveTo(centerX, centerY - radius * 1.6);
-    context.lineTo(centerX, centerY + radius * 1.6);
-    context.stroke();
+    context.lineWidth = 1;
+    if (stage === "source") this.drawSource(context, centerX, centerY, radius, stageProgress);
+    if (stage === "tokens") this.drawTokens(context, centerX, centerY, radius, stageProgress);
+    if (stage === "ast") this.drawAst(context, centerX, centerY, radius, stageProgress);
+    if (stage === "bytecode") this.drawBytecode(context, centerX, centerY, radius, stageProgress);
+    if (stage === "execution") this.drawExecution(context, centerX, centerY, radius, stageProgress);
+  }
 
-    const nodeCount = Math.max(3, Math.round(3 + stageProgress * 5));
-    for (let index = 0; index < nodeCount; index += 1) {
-      const angle = (Math.PI * 2 * index) / nodeCount - Math.PI / 2;
-      const distance = radius * (stage === "source" ? 1.25 : 1);
-      const x = centerX + Math.cos(angle) * distance;
-      const y = centerY + Math.sin(angle) * distance;
-      context.strokeStyle = index % 2 === 0 ? "#c7e36b" : "#c56f4e";
-      context.strokeRect(x - 4, y - 4, 8, 8);
+  private drawSource(context: CanvasRenderingContext2D, centerX: number, centerY: number, radius: number, progress: number) {
+    context.font = "11px monospace";
+    for (let index = 0; index < 6; index += 1) {
+      const y = centerY - radius + index * 19;
+      const width = radius * (0.7 + ((index % 3) * 0.12));
+      context.fillStyle = index <= progress * 6 ? "#c7e36b" : "#343934";
+      context.fillRect(centerX - radius, y, width, 3);
+      context.fillStyle = "#899087";
+      context.fillText(`${String(index + 1).padStart(2, "0")}  ${index % 2 ? "return value" : "compile node"}`, centerX - radius, y + 13);
+    }
+  }
+
+  private drawTokens(context: CanvasRenderingContext2D, centerX: number, centerY: number, radius: number, progress: number) {
+    const count = Math.max(3, Math.round(3 + progress * 7));
+    context.strokeStyle = "rgba(199, 227, 107, 0.35)";
+    context.beginPath();
+    context.moveTo(centerX - radius * 1.35, centerY);
+    context.lineTo(centerX + radius * 1.35, centerY);
+    context.stroke();
+    for (let index = 0; index < count; index += 1) {
+      const x = centerX - radius * 1.2 + index * (radius * 2.4 / Math.max(1, count - 1));
+      context.fillStyle = index % 2 ? "#c56f4e" : "#c7e36b";
+      context.fillRect(x - 7, centerY - 12, 14, 24);
+      context.fillStyle = "#090a09";
+      context.font = "9px monospace";
+      context.fillText(index % 2 ? "op" : "id", x - 6, centerY + 3);
+    }
+  }
+
+  private drawAst(context: CanvasRenderingContext2D, centerX: number, centerY: number, radius: number, progress: number) {
+    const branches = Math.max(2, Math.round(2 + progress * 3));
+    context.strokeStyle = "#c7e36b";
+    context.beginPath();
+    context.moveTo(centerX, centerY - radius);
+    context.lineTo(centerX, centerY);
+    context.stroke();
+    context.fillStyle = "#c56f4e";
+    context.fillRect(centerX - 18, centerY - radius - 8, 36, 16);
+    for (let index = 0; index < branches; index += 1) {
+      const x = centerX - radius + index * (radius * 2 / Math.max(1, branches - 1));
+      const y = centerY + radius * 0.65;
       context.beginPath();
       context.moveTo(centerX, centerY);
       context.lineTo(x, y);
       context.stroke();
+      context.strokeRect(x - 16, y - 8, 32, 16);
     }
+  }
 
-    context.strokeStyle = "#c56f4e";
-    context.lineWidth = 1;
-    context.strokeRect(centerX - 24, centerY - 24, 48, 48);
-    context.fillStyle = "#c7e36b";
-    context.font = "12px monospace";
-    context.fillText(stage.toUpperCase(), centerX - context.measureText(stage.toUpperCase()).width / 2, centerY + 4);
+  private drawBytecode(context: CanvasRenderingContext2D, centerX: number, centerY: number, radius: number, progress: number) {
+    const slots = Math.max(4, Math.round(4 + progress * 5));
+    for (let index = 0; index < slots; index += 1) {
+      const x = centerX - radius * 1.3 + index * (radius * 2.6 / Math.max(1, slots - 1));
+      context.strokeStyle = index <= progress * slots ? "#c7e36b" : "#343934";
+      context.strokeRect(x - 15, centerY - 15, 30, 30);
+      context.fillStyle = index % 2 ? "#c56f4e" : "#899087";
+      context.font = "9px monospace";
+      context.fillText(`0${index + 1}`, x - 8, centerY + 3);
+    }
+  }
+
+  private drawExecution(context: CanvasRenderingContext2D, centerX: number, centerY: number, radius: number, progress: number) {
+    const frames = Math.max(2, Math.round(2 + progress * 2));
+    for (let index = 0; index < frames; index += 1) {
+      const width = radius * (1.35 - index * 0.2);
+      const y = centerY - radius + index * 34;
+      context.strokeStyle = index === frames - 1 ? "#c7e36b" : "#c56f4e";
+      context.strokeRect(centerX - width / 2, y, width, 25);
+      context.fillStyle = "#899087";
+      context.font = "9px monospace";
+      context.fillText(index === frames - 1 ? "operand stack" : "call frame", centerX - width / 2 + 8, y + 16);
+    }
   }
 
   destroy() {

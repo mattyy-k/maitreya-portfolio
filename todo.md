@@ -44,15 +44,15 @@
 - [x] Static semantic fallback
 - [x] Lazy scene host boundary
 - [x] Canvas renderer baseline
-- [ ] Source stream
-- [ ] Tokenization
-- [ ] AST formation
-- [ ] AST stabilization
-- [ ] AST → bytecode transformation
-- [ ] Bytecode stream
-- [ ] VM
-- [ ] Operand stack
-- [ ] Execution behavior
+- [x] Source stream
+- [x] Tokenization
+- [x] AST formation
+- [x] AST stabilization
+- [x] AST → bytecode transformation
+- [x] Bytecode stream
+- [x] VM
+- [x] Operand stack
+- [x] Execution behavior
 - [ ] Final Axiom state
 
 ### Performance
