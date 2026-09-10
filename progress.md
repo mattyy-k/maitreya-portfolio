@@ -59,7 +59,8 @@ Scroll system:
 - Implemented with requestAnimationFrame-backed semantic document progress
 
 Capability detection:
-- Implemented with reduced-motion, WebGL and coarse-pointer signals
+- Implemented with reduced-motion, Canvas 2D, WebGL and coarse-pointer signals
+- Canvas Tier 2 remains available when WebGL is unavailable
 
 Performance instrumentation:
 - Implemented with shell mount marks and measures

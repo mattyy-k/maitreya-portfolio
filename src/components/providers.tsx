@@ -3,8 +3,8 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { detectRenderTier, type Capabilities } from "@/lib/render-tier";
 
-const CapabilityContext = createContext<Capabilities>({ tier: 0, reducedMotion: false, webgl: false, coarsePointer: false });
-const defaultCapabilities: Capabilities = { tier: 0, reducedMotion: false, webgl: false, coarsePointer: false };
+const CapabilityContext = createContext<Capabilities>({ tier: 0, reducedMotion: false, canvas2d: false, webgl: false, coarsePointer: false });
+const defaultCapabilities: Capabilities = { tier: 0, reducedMotion: false, canvas2d: false, webgl: false, coarsePointer: false };
 
 export function CapabilityProvider({ children }: { children: ReactNode }) {
   const [capabilities, setCapabilities] = useState<Capabilities>(defaultCapabilities);
@@ -12,12 +12,14 @@ export function CapabilityProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const canvas = document.createElement("canvas");
+    const canvas2d = Boolean(canvas.getContext("2d"));
     const webgl = Boolean(canvas.getContext("webgl") || canvas.getContext("experimental-webgl"));
     const update = () => {
       const reducedMotion = motionQuery.matches;
       setCapabilities({
-        tier: detectRenderTier(reducedMotion, webgl),
+        tier: detectRenderTier(reducedMotion, webgl, canvas2d),
         reducedMotion,
+        canvas2d,
         webgl,
         coarsePointer: window.matchMedia("(pointer: coarse)").matches,
       });
