@@ -34,13 +34,14 @@
 
 ### Architecture
 
-- [ ] Define Axiom scene API
-- [ ] Define semantic progress ranges
-- [ ] Define fallback states
-- [ ] Define scene lifecycle
+- [x] Define Axiom scene API
+- [x] Define semantic progress ranges
+- [x] Define fallback states
+- [x] Define scene lifecycle
 
 ### Visuals
 
+- [x] Static semantic fallback
 - [ ] Source stream
 - [ ] Tokenization
 - [ ] AST formation

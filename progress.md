@@ -2,7 +2,7 @@
 
 Last updated:
 
-2026-09-09
+2026-09-10
 
 ## Status
 
@@ -31,7 +31,9 @@ Hero:
 - Reduced-motion and Tier 0 static states supported
 
 Axiom:
-- Not implemented
+- Scene contract, semantic stage ranges, and fallback policy defined
+- Static semantic fallback implemented and visibility-gated
+- Canvas renderer not implemented
 
 Praxis:
 - Not implemented
@@ -76,7 +78,7 @@ The baseline architecture is documented in:
 
 ## Current task
 
-Hero landing signal implemented without starting project-specific scenes.
+Axiom static semantic fallback implemented without starting Canvas rendering.
 
 ---
 
@@ -95,7 +97,7 @@ Do not:
 
 ## Next recommended task
 
-Define the Axiom scene API, semantic progress ranges, and fallback states before implementing its renderer.
+Add the Axiom scene host/lazy-loading boundary, then implement the Canvas renderer behind the existing contract.
 3. visual design system
 4. navigation
 5. hero shell

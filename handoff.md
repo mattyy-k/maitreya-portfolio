@@ -1,6 +1,6 @@
-Foundation and Hero signal are complete. The Next.js App Router shell, responsive industrial visual system, navigation, hero and project shells, deep-link routes, rAF-backed scroll progress, render-tier detection, reduced-motion handling, shell performance marks, and an isolated CSS Hero signal are implemented. No project-specific cinematic scenes have been started.
+Foundation, Hero signal, Axiom scene contract, and Axiom static fallback are complete. The Next.js App Router shell, responsive industrial visual system, navigation, hero and project shells, deep-link routes, rAF-backed scroll progress, render-tier detection, reduced-motion handling, shell performance marks, isolated CSS Hero signal, Axiom lifecycle interface, semantic stage ranges, visibility-gated fallback, and fallback policy are implemented. No Axiom Canvas renderer has been started.
 
-Next task: define the Axiom scene API, semantic progress ranges, and fallback states before implementing its renderer.
+Next task: add the Axiom scene host/lazy-loading boundary, then implement the Canvas renderer behind the existing contract.
 # Agent Handoff
 
 This file is maintained by the coding agent.
@@ -68,8 +68,8 @@ Keep this file concise.
 
 ## Validation status
 
-Lint:
-Typecheck:
-Build:
+Lint: pass
+Typecheck: pass
+Build: pass; required routes prerendered
 Tests:
 Performance:
