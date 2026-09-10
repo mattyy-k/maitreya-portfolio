@@ -8,7 +8,6 @@ const initialProgress: AxiomProgress = getAxiomProgress(0);
 
 export function AxiomStaticFallback() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
   const [sceneProgress, setSceneProgress] = useState(initialProgress);
   const { y } = useScrollProgress();
   const { reducedMotion } = useCapabilities();
@@ -16,23 +15,14 @@ export function AxiomStaticFallback() {
   useEffect(() => {
     const element = sectionRef.current;
     if (!element) return;
-    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { rootMargin: "20% 0px" });
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!visible) return;
-    const element = sectionRef.current;
-    if (!element) return;
     const bounds = element.getBoundingClientRect();
     const documentTop = bounds.top + y;
     const progress = (y + window.innerHeight - documentTop) / (window.innerHeight + bounds.height);
     setSceneProgress(getAxiomProgress(progress));
-  }, [visible, y]);
+  }, [y]);
 
   return (
-    <div className={`axiom-fallback ${visible ? "is-visible" : ""} ${reducedMotion ? "is-static" : ""}`} ref={sectionRef}>
+    <div className={`axiom-fallback is-visible ${reducedMotion ? "is-static" : ""}`} ref={sectionRef}>
       <div className="axiom-fallback-head">
         <span>AXIOM / EXECUTION TRACE</span>
         <span>{String(Math.round(sceneProgress.normalized * 100)).padStart(3, "0")}%</span>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Project } from "@/lib/content";
-import { AxiomStaticFallback } from "@/components/axiom-static-fallback";
+import { AxiomSceneHost } from "@/components/axiom-scene-host";
 
 export function ProjectSection({ project, index }: { project: Project; index: number }) {
   return (
@@ -15,7 +15,7 @@ export function ProjectSection({ project, index }: { project: Project; index: nu
         </div>
         <Link className="text-link" href={`/${project.slug}`}>Open project <span aria-hidden="true">↗</span></Link>
       </div>
-      {project.slug === "axiom" ? <AxiomStaticFallback /> : (
+      {project.slug === "axiom" ? <AxiomSceneHost /> : (
         <div className="scene-placeholder" aria-label={`${project.name} visual system placeholder`}>
           <span className="scene-line" />
           <span className="scene-signal">{project.signal}</span>

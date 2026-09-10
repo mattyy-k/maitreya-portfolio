@@ -42,6 +42,7 @@
 ### Visuals
 
 - [x] Static semantic fallback
+- [x] Lazy scene host boundary
 - [ ] Source stream
 - [ ] Tokenization
 - [ ] AST formation

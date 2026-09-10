@@ -33,6 +33,7 @@ Hero:
 Axiom:
 - Scene contract, semantic stage ranges, and fallback policy defined
 - Static semantic fallback implemented and visibility-gated
+- Lazy scene host reserves layout space and activates near viewport
 - Canvas renderer not implemented
 
 Praxis:
@@ -78,7 +79,7 @@ The baseline architecture is documented in:
 
 ## Current task
 
-Axiom static semantic fallback implemented without starting Canvas rendering.
+Axiom static fallback and lazy scene host implemented without starting Canvas rendering.
 
 ---
 
@@ -97,7 +98,7 @@ Do not:
 
 ## Next recommended task
 
-Add the Axiom scene host/lazy-loading boundary, then implement the Canvas renderer behind the existing contract.
+Implement the Axiom Canvas renderer behind the existing contract, preserving the static fallback for reduced motion and lower tiers.
 3. visual design system
 4. navigation
 5. hero shell
