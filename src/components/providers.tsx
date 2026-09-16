@@ -69,6 +69,44 @@ export function useScrollProgress() {
   return useContext(ScrollContext);
 }
 
+export function useSectionProgress(ref: React.RefObject<HTMLElement | null>) {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    let frameId: number | null = null;
+    const update = () => {
+      frameId = null;
+      const el = ref.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const windowHeight = window.innerHeight || 800;
+      // Calculate normalized progress from top entering viewport to bottom leaving
+      const startY = windowHeight * 0.85;
+      const endY = -rect.height * 0.15;
+      const currentY = rect.top;
+      const range = startY - endY;
+      const p = range > 0 ? (startY - currentY) / range : 0;
+      setProgress(Math.max(0, Math.min(1, p)));
+    };
+
+    const onScroll = () => {
+      if (frameId === null) frameId = window.requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    update();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frameId !== null) window.cancelAnimationFrame(frameId);
+    };
+  }, [ref]);
+
+  return progress;
+}
+
 export function PerformanceInstrumentation() {
   useEffect(() => {
     performance.mark("portfolio-shell-mounted");
