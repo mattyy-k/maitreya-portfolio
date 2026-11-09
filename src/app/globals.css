@@ -106,6 +106,120 @@ nav a.active {
   width: 5px;
 }
 
+.header-status-area {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+}
+
+.mobile-nav-toggle {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--paper);
+  cursor: pointer;
+  display: none;
+  height: 36px;
+  justify-content: center;
+  padding: 0;
+  width: 36px;
+}
+
+.menu-bar {
+  background: var(--paper);
+  display: block;
+  height: 2px;
+  position: relative;
+  transition: background .2s ease;
+  width: 16px;
+}
+
+.menu-bar::before,
+.menu-bar::after {
+  background: var(--paper);
+  content: "";
+  height: 2px;
+  left: 0;
+  position: absolute;
+  transition: transform .2s ease;
+  width: 16px;
+}
+
+.menu-bar::before {
+  top: -5px;
+}
+
+.menu-bar::after {
+  top: 5px;
+}
+
+.menu-bar.open {
+  background: transparent;
+}
+
+.menu-bar.open::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.menu-bar.open::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+.mobile-nav-overlay {
+  background: rgba(9, 10, 9, 0.98);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.8);
+  inset: 64px 0 auto 0;
+  padding: 20px;
+  position: fixed;
+  z-index: 100;
+}
+
+.mobile-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mobile-nav-item {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--paper);
+  display: flex;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  justify-content: space-between;
+  letter-spacing: .08em;
+  padding: 14px 16px;
+  text-transform: uppercase;
+  transition: border-color .15s ease, background .15s ease;
+}
+
+.mobile-nav-item.active {
+  border-color: var(--acid);
+  color: var(--acid);
+}
+
+.mobile-nav-item:hover {
+  background: var(--surface-hover);
+}
+
+.nav-index {
+  color: var(--acid);
+  font-size: 9px;
+}
+
+.nav-title {
+  font-weight: 500;
+}
+
+.nav-arrow {
+  color: var(--muted);
+}
+
 /* Hero Section */
 .hero-section {
   min-height: 100vh;
@@ -885,6 +999,35 @@ nav a.active {
   margin-bottom: 50px;
 }
 
+.detail-visual-showcase {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  margin: 36px 0 50px;
+}
+
+.detail-visual-header {
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  justify-content: space-between;
+  padding: 12px 18px;
+}
+
+.visual-tag {
+  color: var(--acid);
+  font-weight: 500;
+}
+
+.visual-sub {
+  color: var(--muted);
+}
+
+.detail-visual-inner {
+  padding: 24px;
+}
+
 .detail-section {
   border-top: 1px solid var(--line);
   margin-top: 50px;
@@ -961,8 +1104,12 @@ nav a.active {
     height: 64px;
   }
 
-  .site-header nav {
+  .desktop-nav {
     display: none;
+  }
+
+  .mobile-nav-toggle {
+    display: flex;
   }
 
   .hero-section {

@@ -77,92 +77,100 @@ export class PraxisCanvasScene {
   private drawRequestStream(ctx: CanvasRenderingContext2D, centerX: number, centerY: number, progress: number) {
     ctx.font = "10px 'DM Mono', monospace";
     ctx.fillStyle = "#899087";
-    ctx.fillText("> BATCH REQUEST STREAM (PYTORCH BATCHES)", centerX - 160, centerY - 80);
+    ctx.fillText("> BATCH REQUEST STREAM (PYTORCH BATCHES)", Math.max(16, centerX - 160), centerY - 80);
 
-    const batchCount = 6;
-    const startX = centerX - 160;
+    const trackW = Math.min(this.width - 48, 320);
+    const startX = centerX - trackW / 2;
+    const batchCount = this.width < 440 ? 4 : 6;
+    const cardSize = this.width < 440 ? 32 : 38;
 
     for (let i = 0; i < batchCount; i++) {
-      const offset = ((i / batchCount + progress * 0.8) % 1) * 320;
+      const offset = ((i / batchCount + progress * 0.8) % 1) * trackW;
       const x = startX + offset;
       const y = centerY - 15;
 
       ctx.fillStyle = "#141a14";
-      ctx.fillRect(x - 20, y - 20, 40, 40);
+      ctx.fillRect(x - cardSize / 2, y - cardSize / 2, cardSize, cardSize);
       ctx.strokeStyle = i % 2 === 0 ? "#c56f4e" : "#c7e36b";
-      ctx.strokeRect(x - 20, y - 20, 40, 40);
+      ctx.strokeRect(x - cardSize / 2, y - cardSize / 2, cardSize, cardSize);
 
       ctx.font = "8px 'DM Mono', monospace";
       ctx.fillStyle = "#ffffff";
-      ctx.fillText(`B_${i}`, x - 10, y + 4);
+      ctx.fillText(`B_${i}`, x - 8, y + 3);
     }
 
     ctx.strokeStyle = "rgba(197, 111, 78, 0.4)";
     ctx.beginPath();
-    ctx.moveTo(startX - 10, centerY + 35);
-    ctx.lineTo(startX + 330, centerY + 35);
+    ctx.moveTo(startX - 6, centerY + 35);
+    ctx.lineTo(startX + trackW + 6, centerY + 35);
     ctx.stroke();
 
     ctx.fillStyle = "#c56f4e";
     ctx.font = "9px 'DM Mono', monospace";
-    ctx.fillText("ML EPOCH REQUESTS INCOMING", centerX - 90, centerY + 55);
+    ctx.fillText("ML EPOCH REQUESTS INCOMING", Math.max(16, centerX - 90), centerY + 55);
   }
 
   // 2. HASH LOOKUP & CACHE HIT / MISS
   private drawHashLookupAndCache(ctx: CanvasRenderingContext2D, centerX: number, centerY: number) {
     ctx.font = "10px 'DM Mono', monospace";
     ctx.fillStyle = "#899087";
-    ctx.fillText("> HASH INDEX & CACHE HIT / MISS EVALUATION", centerX - 160, centerY - 85);
+    ctx.fillText("> HASH INDEX & CACHE HIT / MISS EVALUATION", Math.max(16, centerX - 160), centerY - 85);
+
+    const availableW = this.width - 36;
+    const boxW = Math.min(145, Math.floor((availableW - 14) / 2));
+    const hashX = centerX - boxW - 7;
+    const vecX = centerX + 7;
+    const boxY = centerY - 55;
+    const boxH = 130;
 
     // Hash Index Box (Left)
-    const hashX = centerX - 170;
-    const hashY = centerY - 55;
     ctx.fillStyle = "#101410";
-    ctx.fillRect(hashX, hashY, 140, 130);
+    ctx.fillRect(hashX, boxY, boxW, boxH);
     ctx.strokeStyle = "#2c362c";
-    ctx.strokeRect(hashX, hashY, 140, 130);
+    ctx.strokeRect(hashX, boxY, boxW, boxH);
 
-    ctx.font = "9px 'DM Mono', monospace";
+    ctx.font = "8.5px 'DM Mono', monospace";
     ctx.fillStyle = "#c7e36b";
-    ctx.fillText("HASH INDEX", hashX + 12, hashY + 18);
+    ctx.fillText("HASH INDEX", hashX + 8, boxY + 18);
 
     const slots = ["key_0x8F (HIT)", "key_0x91 (MISS)", "key_0xA4 (HIT)", "key_0xB2 (MISS)"];
     slots.forEach((s, idx) => {
-      const y = hashY + 32 + idx * 22;
+      const y = boxY + 30 + idx * 22;
       const isHit = s.includes("HIT");
       ctx.fillStyle = isHit ? "rgba(199, 227, 107, 0.15)" : "rgba(197, 111, 78, 0.15)";
-      ctx.fillRect(hashX + 8, y, 124, 18);
+      ctx.fillRect(hashX + 6, y, boxW - 12, 18);
       ctx.fillStyle = isHit ? "#c7e36b" : "#c56f4e";
-      ctx.fillText(s, hashX + 12, y + 13);
+      ctx.font = "8px 'DM Mono', monospace";
+      ctx.fillText(boxW < 120 ? s.replace("key_", "") : s, hashX + 10, y + 13);
     });
 
     // Arrow to Vector Storage
     ctx.strokeStyle = "#899087";
     ctx.beginPath();
-    ctx.moveTo(hashX + 140, centerY + 10);
-    ctx.lineTo(centerX + 30, centerY + 10);
+    ctx.moveTo(hashX + boxW, centerY + 10);
+    ctx.lineTo(vecX, centerY + 10);
     ctx.stroke();
 
     // Contiguous Vector Metadata (Right)
-    const vecX = centerX + 30;
-    const vecY = centerY - 55;
     ctx.fillStyle = "#101410";
-    ctx.fillRect(vecX, vecY, 140, 130);
+    ctx.fillRect(vecX, boxY, boxW, boxH);
     ctx.strokeStyle = "#2c362c";
-    ctx.strokeRect(vecX, vecY, 140, 130);
+    ctx.strokeRect(vecX, boxY, boxW, boxH);
 
+    ctx.font = "8.5px 'DM Mono', monospace";
     ctx.fillStyle = "#c56f4e";
-    ctx.fillText("VECTOR METADATA", vecX + 10, vecY + 18);
+    ctx.fillText("VECTOR METADATA", vecX + 8, boxY + 18);
 
     for (let i = 0; i < 4; i++) {
-      const y = vecY + 32 + i * 22;
+      const y = boxY + 30 + i * 22;
       ctx.fillStyle = "#1a221a";
-      ctx.fillRect(vecX + 8, y, 124, 18);
+      ctx.fillRect(vecX + 6, y, boxW - 12, 18);
       ctx.strokeStyle = "#323e32";
-      ctx.strokeRect(vecX + 8, y, 124, 18);
+      ctx.strokeRect(vecX + 6, y, boxW - 12, 18);
 
       ctx.fillStyle = "#e3e7dd";
-      ctx.fillText(`Slot #${i} [64KB]`, vecX + 12, y + 13);
+      ctx.font = "8px 'DM Mono', monospace";
+      ctx.fillText(`Slot #${i} [64KB]`, vecX + 10, y + 13);
     }
   }
 
@@ -170,7 +178,7 @@ export class PraxisCanvasScene {
   private drawLRUEviction(ctx: CanvasRenderingContext2D, centerX: number, centerY: number, progress: number) {
     ctx.font = "10px 'DM Mono', monospace";
     ctx.fillStyle = "#899087";
-    ctx.fillText("> MEMORY-BOUNDED LRU EVICTION FLOW", centerX - 160, centerY - 85);
+    ctx.fillText("> MEMORY-BOUNDED LRU EVICTION FLOW", Math.max(16, centerX - 160), centerY - 85);
 
     const blocks = [
       { id: "B_01", age: "LRU (OLD)", evict: true },
@@ -179,32 +187,36 @@ export class PraxisCanvasScene {
       { id: "B_04", age: "MRU (NEW)", evict: false },
     ];
 
-    const startX = centerX - 180;
+    const availableW = this.width - 36;
+    const blockW = Math.min(78, Math.floor((availableW - 24) / 4));
+    const gap = Math.min(10, Math.max(4, Math.floor((availableW - blockW * 4) / 3)));
+    const totalW = blockW * 4 + gap * 3;
+    const startX = centerX - totalW / 2;
 
     blocks.forEach((b, idx) => {
-      const x = startX + idx * 92;
+      const x = startX + idx * (blockW + gap);
       const y = centerY - 25;
 
       const isEvicted = b.evict && progress > 0.4;
 
       ctx.fillStyle = isEvicted ? "rgba(226, 93, 72, 0.15)" : "#101410";
-      ctx.fillRect(x, y, 78, 60);
+      ctx.fillRect(x, y, blockW, 58);
       ctx.strokeStyle = isEvicted ? "#e25d48" : "#2c362c";
-      ctx.strokeRect(x, y, 78, 60);
+      ctx.strokeRect(x, y, blockW, 58);
 
-      ctx.font = "10px 'DM Mono', monospace";
+      ctx.font = "9.5px 'DM Mono', monospace";
       ctx.fillStyle = isEvicted ? "#e25d48" : "#e3e7dd";
-      ctx.fillText(b.id, x + 10, y + 24);
+      ctx.fillText(b.id, x + 8, y + 22);
 
-      ctx.font = "8px 'DM Mono', monospace";
+      ctx.font = "7.5px 'DM Mono', monospace";
       ctx.fillStyle = isEvicted ? "#e25d48" : "#899087";
-      ctx.fillText(b.age, x + 8, y + 46);
+      ctx.fillText(blockW < 65 ? b.age.split(" ")[0] : b.age, x + 6, y + 44);
     });
 
     if (progress > 0.4) {
       ctx.fillStyle = "#e25d48";
-      ctx.font = "10px 'DM Mono', monospace";
-      ctx.fillText("! MEMORY LIMIT REACHED -> EVICTING LRU BLOCK B_01", centerX - 150, centerY + 65);
+      ctx.font = "9px 'DM Mono', monospace";
+      ctx.fillText("! MEMORY LIMIT REACHED -> EVICTING LRU BLOCK B_01", Math.max(16, centerX - 140), centerY + 65);
     }
   }
 
@@ -212,33 +224,36 @@ export class PraxisCanvasScene {
   private drawWarmEpochSpeedup(ctx: CanvasRenderingContext2D, centerX: number, centerY: number) {
     ctx.font = "10px 'DM Mono', monospace";
     ctx.fillStyle = "#899087";
-    ctx.fillText("> SYNTHETIC BENCHMARK: REPEATED EPOCH ACCELERATION", centerX - 180, centerY - 85);
+    ctx.fillText("> SYNTHETIC BENCHMARK: REPEATED EPOCH ACCELERATION", Math.max(16, centerX - 180), centerY - 85);
+
+    const barW = Math.min(this.width - 40, 320);
+    const startX = centerX - barW / 2;
 
     // Bar 1: Cold Epoch (1x)
     const bar1Y = centerY - 35;
     ctx.fillStyle = "#c56f4e";
-    ctx.fillRect(centerX - 160, bar1Y, 320, 24);
+    ctx.fillRect(startX, bar1Y, barW, 24);
     ctx.strokeStyle = "#38231a";
-    ctx.strokeRect(centerX - 160, bar1Y, 320, 24);
+    ctx.strokeRect(startX, bar1Y, barW, 24);
 
-    ctx.font = "10px 'DM Mono', monospace";
+    ctx.font = "9px 'DM Mono', monospace";
     ctx.fillStyle = "#ffffff";
-    ctx.fillText("COLD EPOCH 1: 142ms / batch (Preprocessing Overhead)", centerX - 152, bar1Y + 16);
+    ctx.fillText(barW < 280 ? "COLD: 142ms / batch" : "COLD EPOCH 1: 142ms / batch", startX + 8, bar1Y + 16);
 
     // Bar 2: Warm Epoch (13x Speedup)
     const bar2Y = centerY + 15;
-    const warmWidth = Math.max(26, 320 * (1 / 13));
+    const warmWidth = Math.max(24, Math.round(barW * (1 / 13)));
     ctx.fillStyle = "#c7e36b";
-    ctx.fillRect(centerX - 160, bar2Y, warmWidth, 24);
+    ctx.fillRect(startX, bar2Y, warmWidth, 24);
     ctx.strokeStyle = "#2e3b18";
-    ctx.strokeRect(centerX - 160, bar2Y, warmWidth, 24);
+    ctx.strokeRect(startX, bar2Y, warmWidth, 24);
 
     ctx.fillStyle = "#c7e36b";
-    ctx.fillText("WARM EPOCH 2: 11ms / batch (13x SYNTHETIC SPEEDUP)", centerX - 160 + warmWidth + 12, bar2Y + 16);
+    ctx.fillText(barW < 280 ? "WARM: 11ms (13x)" : "WARM EPOCH 2: 11ms / batch (13x SPEEDUP)", startX + warmWidth + 8, bar2Y + 16);
 
     ctx.font = "8px 'DM Mono', monospace";
     ctx.fillStyle = "#656e64";
-    ctx.fillText("* Note: 13x measurement based on synthetic in-memory benchmark harness.", centerX - 160, centerY + 65);
+    ctx.fillText("* Note: 13x measurement based on synthetic in-memory benchmark harness.", Math.max(16, startX), centerY + 65);
   }
 
   destroy() {

@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { identity } from "@/lib/content";
 import { Navigation } from "@/components/navigation";
 import { SiteFooter } from "@/components/site-footer";
+
+export const metadata: Metadata = {
+  title: "About | Maitreya Kulkarni",
+  description: "Engineering background, education, and classical rhythm discipline of Maitreya Kulkarni.",
+};
 
 export default function AboutPage() {
   return (
@@ -38,9 +44,7 @@ export default function AboutPage() {
               <div>
                 <dt>PROFESSIONAL STATUS</dt>
                 <dd>
-                  <strong>Incoming Intern: Wells Fargo</strong> (Software Engineering)
-                  <br />
-                  U.S. Citizen • Requires no visa sponsorship
+                  <strong>Incoming Intern: Wells Fargo</strong>
                 </dd>
               </div>
               <div>

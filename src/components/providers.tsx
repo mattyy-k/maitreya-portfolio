@@ -109,9 +109,20 @@ export function useSectionProgress(ref: React.RefObject<HTMLElement | null>) {
 
 export function PerformanceInstrumentation() {
   useEffect(() => {
-    performance.mark("portfolio-shell-mounted");
-    performance.measure("portfolio-shell", "navigationStart", "portfolio-shell-mounted");
-    return () => performance.clearMarks("portfolio-shell-mounted");
+    try {
+      performance.mark("portfolio-shell-mounted");
+      performance.measure("portfolio-shell", { start: 0, end: "portfolio-shell-mounted" });
+    } catch {
+      // Gracefully fall back if performance measurement is restricted
+    }
+    return () => {
+      try {
+        performance.clearMarks("portfolio-shell-mounted");
+        performance.clearMeasures("portfolio-shell");
+      } catch {
+        // Ignore clearance errors on unmount
+      }
+    };
   }, []);
   return null;
 }

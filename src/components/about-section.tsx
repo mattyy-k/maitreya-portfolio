@@ -35,7 +35,7 @@ export function AboutSection() {
               <p className="meta-val">
                 {identity.internship}
                 <br />
-                <span className="meta-sub">U.S. Citizen • No Sponsorship Required</span>
+                <span className="meta-sub">NITK Surathkal &bull; Software Engineering</span>
               </p>
             </div>
 

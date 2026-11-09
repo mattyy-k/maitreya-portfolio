@@ -56,19 +56,23 @@ export class ForgeCanvasScene {
     // Parent Shell Process Node (PID 1024)
     const parentX = centerX;
     const parentY = centerY - 75;
+    const parentW = Math.min(140, this.width - 32);
 
     ctx.fillStyle = "#141a14";
-    ctx.fillRect(parentX - 70, parentY - 18, 140, 36);
+    ctx.fillRect(parentX - parentW / 2, parentY - 18, parentW, 36);
     ctx.strokeStyle = "#c7e36b";
-    ctx.strokeRect(parentX - 70, parentY - 18, 140, 36);
+    ctx.strokeRect(parentX - parentW / 2, parentY - 18, parentW, 36);
 
-    ctx.font = "10px 'DM Mono', monospace";
+    ctx.font = "9.5px 'DM Mono', monospace";
     ctx.fillStyle = "#c7e36b";
-    ctx.fillText("FORGE SHELL (PID 1024)", parentX - 60, parentY + 4);
+    ctx.fillText("FORGE SHELL (PID 1024)", parentX - parentW / 2 + 10, parentY + 4);
 
-    // Fork & Pipe Flow based on progress
-    const child1X = centerX - 110;
-    const child2X = centerX + 110;
+    // Dynamic child node dimensions based on available width
+    const availableW = this.width - 32;
+    const childW = Math.min(130, Math.floor((availableW - 16) / 2));
+    const spread = Math.min(110, Math.floor((availableW - childW) / 2));
+    const child1X = centerX - spread;
+    const child2X = centerX + spread;
     const childrenY = centerY + 35;
 
     if (p > 0.2) {
@@ -77,12 +81,12 @@ export class ForgeCanvasScene {
       ctx.setLineDash([3, 3]);
 
       ctx.beginPath();
-      ctx.moveTo(parentX - 20, parentY + 18);
+      ctx.moveTo(parentX - Math.min(20, parentW / 4), parentY + 18);
       ctx.lineTo(child1X, childrenY - 18);
       ctx.stroke();
 
       ctx.beginPath();
-      ctx.moveTo(parentX + 20, parentY + 18);
+      ctx.moveTo(parentX + Math.min(20, parentW / 4), parentY + 18);
       ctx.lineTo(child2X, childrenY - 18);
       ctx.stroke();
 
@@ -92,55 +96,60 @@ export class ForgeCanvasScene {
     if (p > 0.35) {
       // Child Process 1 (cat /var/log)
       ctx.fillStyle = "#121612";
-      ctx.fillRect(child1X - 65, childrenY - 18, 130, 36);
+      ctx.fillRect(child1X - childW / 2, childrenY - 18, childW, 36);
       ctx.strokeStyle = "#c56f4e";
-      ctx.strokeRect(child1X - 65, childrenY - 18, 130, 36);
+      ctx.strokeRect(child1X - childW / 2, childrenY - 18, childW, 36);
 
-      ctx.font = "9px 'DM Mono', monospace";
+      ctx.font = "8.5px 'DM Mono', monospace";
       ctx.fillStyle = "#c56f4e";
-      ctx.fillText("CHILD 1 (PID 1025)", child1X - 55, childrenY - 4);
+      ctx.fillText(childW < 100 ? "CHILD 1" : "CHILD 1 (PID 1025)", child1X - childW / 2 + 8, childrenY - 4);
       ctx.fillStyle = "#899087";
-      ctx.fillText("execvp('cat')", child1X - 55, childrenY + 10);
+      ctx.fillText("execvp('cat')", child1X - childW / 2 + 8, childrenY + 10);
     }
 
     if (p > 0.5) {
       // Child Process 2 (grep 'ERROR')
       ctx.fillStyle = "#121612";
-      ctx.fillRect(child2X - 65, childrenY - 18, 130, 36);
+      ctx.fillRect(child2X - childW / 2, childrenY - 18, childW, 36);
       ctx.strokeStyle = "#c7e36b";
-      ctx.strokeRect(child2X - 65, childrenY - 18, 130, 36);
+      ctx.strokeRect(child2X - childW / 2, childrenY - 18, childW, 36);
 
-      ctx.font = "9px 'DM Mono', monospace";
+      ctx.font = "8.5px 'DM Mono', monospace";
       ctx.fillStyle = "#c7e36b";
-      ctx.fillText("CHILD 2 (PID 1026)", child2X - 55, childrenY - 4);
+      ctx.fillText(childW < 100 ? "CHILD 2" : "CHILD 2 (PID 1026)", child2X - childW / 2 + 8, childrenY - 4);
       ctx.fillStyle = "#899087";
-      ctx.fillText("execvp('grep')", child2X - 55, childrenY + 10);
+      ctx.fillText("execvp('grep')", child2X - childW / 2 + 8, childrenY + 10);
     }
 
     if (p > 0.65) {
       // POSIX Pipe Connection between Child 1 and Child 2 (dup2 fd[1] -> fd[0])
+      const pipeStartX = child1X + childW / 2;
+      const pipeEndX = child2X - childW / 2;
       ctx.strokeStyle = "#c7e36b";
       ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.moveTo(child1X + 65, childrenY);
-      ctx.lineTo(child2X - 65, childrenY);
+      ctx.moveTo(pipeStartX, childrenY);
+      ctx.lineTo(pipeEndX, childrenY);
       ctx.stroke();
 
+      const badgeW = Math.min(80, Math.max(50, pipeEndX - pipeStartX - 8));
       ctx.fillStyle = "#101410";
-      ctx.fillRect(centerX - 40, childrenY - 10, 80, 20);
+      ctx.fillRect(centerX - badgeW / 2, childrenY - 10, badgeW, 20);
       ctx.strokeStyle = "rgba(199, 227, 107, 0.4)";
-      ctx.strokeRect(centerX - 40, childrenY - 10, 80, 20);
+      ctx.strokeRect(centerX - badgeW / 2, childrenY - 10, badgeW, 20);
 
-      ctx.font = "8px 'DM Mono', monospace";
+      ctx.font = "7.5px 'DM Mono', monospace";
       ctx.fillStyle = "#c7e36b";
-      ctx.fillText("PIPE (fd 3->4)", centerX - 32, childrenY + 3);
+      ctx.fillText(badgeW < 65 ? "PIPE" : "PIPE (3->4)", centerX - badgeW / 2 + 6, childrenY + 3);
     }
 
     // Bottom Status Line
     ctx.font = "9px 'DM Mono', monospace";
     ctx.fillStyle = "#5d645c";
     ctx.fillText(`PROGRESS: ${(p * 100).toFixed(1)}%`, 20, this.height - 16);
-    ctx.fillText(`FORK / EXECVP / PIPE / DUP2 / WAITPID`, this.width - 240, this.height - 16);
+    if (this.width >= 440) {
+      ctx.fillText(`FORK / EXECVP / PIPE / DUP2 / WAITPID`, this.width - 240, this.height - 16);
+    }
   }
 
   destroy() {
